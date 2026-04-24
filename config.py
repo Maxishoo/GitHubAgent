@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def load_config() -> dict:
+def load_config():
     return {
         "GITHUB_TOKEN": os.environ.get("GITHUB_TOKEN"),
         "GITHUB_REPO": os.environ.get("GITHUB_REPO"),

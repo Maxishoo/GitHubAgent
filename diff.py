@@ -1,7 +1,7 @@
 import difflib
 
 
-def unified_diff_text(old: str, new: str, filename: str) -> str:
+def unified_diff_text(old, new, filename):
     return "\n".join(
         difflib.unified_diff(
             old.splitlines(keepends=True),

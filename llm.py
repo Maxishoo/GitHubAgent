@@ -66,7 +66,7 @@ Return:
     ).strip()
 
 
-def generate_plan(task: str, summary: str):
+def generate_plan(task, summary):
     system = """
 You are a planning engine.
 
@@ -177,3 +177,66 @@ Return ONLY file content.
          {"role": "user", "content": user}],
         temperature=0.2
     ).strip()
+
+
+def detect_mode(task):
+    system = """
+You are a routing system for a coding agent.
+
+Classify the user request into exactly ONE label:
+
+- code
+- architecture
+
+RULES:
+- output ONLY one word
+- no punctuation
+- no explanation
+"""
+
+    user = f"""
+Task:
+{task}
+
+Return only the label.
+"""
+
+    result = chat(
+        [{"role": "system", "content": system},
+         {"role": "user", "content": user}],
+        temperature=0.0
+    )
+
+    return result.strip().lower()
+
+def generate_architecture(summary, files):
+    system = """
+You are a senior software architect.
+
+RULES:
+- NO code
+- NO JSON
+- NO markdown noise
+- simple explanation only
+- the answer is in Russian
+"""
+
+    user = f"""
+Files:
+{files}
+
+Summary:
+{summary}
+
+Explain:
+- what project does
+- how it works
+- main components
+- data flow
+"""
+
+    return chat(
+        [{"role": "system", "content": system},
+         {"role": "user", "content": user}],
+        temperature=0.2
+    )

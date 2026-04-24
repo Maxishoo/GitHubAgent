@@ -1,7 +1,8 @@
 import json
 
 from github_tools import list_repo_files, get_file, write_file, create_file
-from llm import generate_summary, generate_plan, generate_code_edit, generate_new_file
+from llm import (generate_summary, generate_plan, generate_code_edit,
+                 generate_new_file, detect_mode, generate_architecture)
 from diff import unified_diff_text
 
 
@@ -10,6 +11,8 @@ def ask_yes_no(prompt):
 
 
 def run_agent(task, config):
+    mode = detect_mode(task)
+
     repo = config["GITHUB_REPO"]
 
     print("\nListing repository files...")
@@ -20,6 +23,13 @@ def run_agent(task, config):
     summary = generate_summary(files)
     print("\nSUMMARY\n" + summary)
 
+    if mode == "architecture":
+        print(f"Project architecture:\n\n{generate_architecture(summary, files)}")
+    else:
+        run_code_agent(task, repo, files, summary)
+
+
+def run_code_agent(task, repo, files, summary):
     print("\nGenerating plan (LLM)...")
     plan_text = generate_plan(task, summary)
     print("\nPLAN")
