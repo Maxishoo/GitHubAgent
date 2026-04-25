@@ -6,7 +6,7 @@ def main():
     config = load_config()
 
     print("Welcome to GitHub Code Agent")
-    if(input("Use env repo? y/n") == "y"):
+    if(input("Use env repo? y/n   ") == "y"):
         print(f"Use repo: {config['GITHUB_REPO']}")
     else:
         config['GITHUB_REPO'] = input("Link to your github repository: ")
@@ -19,7 +19,7 @@ def main():
         
         run_agent(task=task, config=config)
 
-        if(input("Something else? y/n") == "n"):
+        if(input("Something else? y/n  ") == "n"):
             return
 
 
